@@ -52,8 +52,8 @@ public class TestController {
         System.out.println("path:" + path);
         //登录成功
         HashMap<String, String> map2 = new HashMap<String, String>();
-        map2.put("username", "wuhaibo");
-        map2.put("password", "liangxin03191996");
+        map2.put("username", "liujianfu");
+        map2.put("password", "ljf-123456");
         String responseContent = HttpUtils.sendHttpRequest("http://131.107.26.10:8080//cas/v2/tickets", map2);
         System.out.println(responseContent);
 
@@ -65,11 +65,15 @@ public class TestController {
             cookie.setPath("/");
             response.addCookie(cookie);
             model.addAttribute("TGT", TGT);
-            //model.addAttribute("responseUrl", "http://131.107.26.11:8888/sso/api/helloWord");
-            model.addAttribute("responseUrl", "http://192.168.110.195:8888/sso/api/helloWord");
+//            model.addAttribute("responseUrl", "http://131.107.26.11:8888/sso/api/helloWord");
+             model.addAttribute("responseUrl", "http://192.168.110.195:8888/sso/api/helloWord");
             //  ?token = xxxxx
-         //String redirectUrl ="http://192.168.110.165:8099/CasTempServer/test/test1?ticket="+TGT+"&"+"responseUrl="+"http://192.168.110.195:8888/sso/api/helloWord";
-          String redirectUrl = "http://131.107.26.10:8099/CasTempServer/test/test1?ticket=" + TGT + "&" + "responseUrl=" + "http://192.168.110.195:8888/sso/api/helloWord";
+           //本地测试这个地址是错误的
+//         String redirectUrl ="http://192.168.110.165:8099/CasTempServer/test/test1?ticket="+TGT+"&"+"responseUrl="+"http://192.168.110.195:8888/sso/api/helloWord";
+           //本地测试使用
+            String redirectUrl = "http://131.107.26.10:8099/CasTempServer/test/test1?ticket=" + TGT + "&" + "responseUrl=" + "http://192.168.110.195:8888/sso/api/helloWord";
+            //线上发布使用
+//            String redirectUrl = "http://131.107.26.10:8099/CasTempServer/test/test1?ticket=" + TGT + "&" + "responseUrl=" + "http://131.107.26.11:8888/sso/api/helloWord";
             return "redirect:" + redirectUrl;
         } else {
             System.out.println("用户名或密码错误！");
@@ -86,6 +90,10 @@ public class TestController {
         String redirectUrl = "http://192.168.110.195:8888/sso/api/index" ;
        String responseContent = HttpUtils.sendHttpRequest("http://131.107.26.10:8080/cas/logout?service="+redirectUrl, map2);
         logger.info("-------------------------"+responseContent);
+    Cookie[] cookies= request.getCookies();
+         for (Cookie c :cookies){
+             System.out.println(c.toString());
+         }
         return "redirect:" + redirectUrl;
     }
     @RequestMapping("/orderManager")
